@@ -1,23 +1,27 @@
-version: "3.8"
+# dockerエンジンの対象バージョンに合わせる
+version: '3.8'
+
 services:
   db:
-    image: postgres
-    # volumes:
-    #   - ./tmp/db:/var/lib/postgresql/data
+    image: postgres:15.3
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_PASSWORD=admin
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+      TZ: Asia/Tokyo
     ports:
-      - "5432:5432"
-  api:
-    build: ./api/
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    image: api
+      - '5432:5432'
+
+  backend:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    container_name: rails-api
+    ports:
+      - '8080:8080'
+    working_dir: /backend 
+    stop_signal: SIGINT
     volumes:
-      - ./api:/api
-    environment:
-      RAILS_ENV: development
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
+      - ./backend:/backend
+    stdin_open: true
+    tty: true
