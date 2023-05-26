@@ -1,8 +1,9 @@
+#!/bin/bash
 set -e
 
 bundle install
 
-if [ ! -e "/api/config/routes.rb" ]; then
+if [ ! -e "/backend/config/routes.rb" ]; then
   echo 'rails new APIモード を実行する'
   # --skip入れないとpgのgemないってエラーが出る
   rails new . --force --api --database=postgresql --skip-git --skip-bundle
@@ -10,7 +11,7 @@ if [ ! -e "/api/config/routes.rb" ]; then
 fi
 
 # Remove a potentially pre-existing server.pid for Rails.
-rm -f /api/tmp/pids/server.pid
+rm -f /backend/tmp/pids/server.pid
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"
