@@ -1,4 +1,3 @@
-# dockerエンジンの対象バージョンに合わせる
 version: '3.8'
 
 services:

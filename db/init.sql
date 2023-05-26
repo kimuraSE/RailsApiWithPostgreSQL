@@ -1,12 +1,6 @@
--- init.sql
-CREATE DATABASE rails_db;
-CREATE USER rails_user WITH ENCRYPTED PASSWORD 'password';
-GRANT ALL PRIVILEGES ON DATABASE rails_db TO rails_user;
-
-\c rails_db
-
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(100)
+  name VARCHAR(64) NOT NULL,
+  email VARCHAR(128) NOT NULL UNIQUE,
+  password VARCHAR(128) NOT NULL
 );
